@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+	<title>Stack</title>
+
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<link rel="stylesheet" href="stack.css"/>
+</head>
+<body id="ui">
+
+	<div id="titleEl" class="well"></div>
+
+	<textarea id="inputEl" class="well" placeholder="Paste your error or stack"></textarea>
+
+	<div id="navEl" class="well"></div>
+
+	<div id="demoEl" class="btn">Demo</div>
+	<div id="backEl" class="btn">Back</div>
+
+	<label id="beautifyEl" class="well">
+		<input id="beautifyChecked" type="checkbox" checked />
+		beautify
+	</label>
+
+	<pre><code id="codeEl"></code></pre>
+
+
+	<script src="//yandex.st/highlightjs/7.5/highlight.min.js"></script>
+	<script src="//jsbeautifier.org/js/lib/beautify.js"></script>
+
+	<script src="stack.js"></script>
+
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="./demo/bug.js"></script>
+
+</body>
+</html>
