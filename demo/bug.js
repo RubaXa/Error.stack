@@ -4,8 +4,8 @@ jQuery(function ($){
 	$(window).on('bug', function (){
 		try {
 			bug();
-		} catch (er){
-			console.log(er.stack);
+		} catch (err){
+			window.demoBugStack = err.toString()+'\n'+err.stack;
 		}
 	});
 

@@ -232,17 +232,7 @@
 	};
 
 	demoEl.onclick = function (){
-		inputEl.value = 'ReferenceError: bug is not defined\n\
-    at http://local.git/Error.stack/demo/bug.js:6:4\n\
-    at x.event.dispatch (http://code.jquery.com/jquery-1.10.1.min.js:5:14113)\n\
-    at v.handle (http://code.jquery.com/jquery-1.10.1.min.js:5:10850)\n\
-    at Object.x.event.trigger (http://code.jquery.com/jquery-1.10.1.min.js:5:13239)\n\
-    at http://code.jquery.com/jquery-1.10.1.min.js:5:20760\n\
-    at Function.x.extend.each (http://code.jquery.com/jquery-1.10.1.min.js:4:5347)\n\
-    at x.fn.x.each (http://code.jquery.com/jquery-1.10.1.min.js:4:1999)\n\
-    at x.fn.extend.trigger (http://code.jquery.com/jquery-1.10.1.min.js:5:20736)\n\
-    at HTMLDocument.<anonymous> (http://local.git/Error.stack/demo/bug.js:12:12)\n\
-    at c (http://code.jquery.com/jquery-1.10.1.min.js:4:26051)';
+		inputEl.value = window.demoBugStack;
 
 		inputEl.oninput(1500);
 	};
