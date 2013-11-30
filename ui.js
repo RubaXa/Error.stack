@@ -209,14 +209,15 @@
 
 	var pid = 0;
 	inputEl.oninput = function (delay){
+		var value = inputEl.value.trim();
 		clearTimeout(pid);
 
 		var pid = setTimeout(function (){
-			setStack(inputEl.value);
+			setStack(value);
 		}, delay > 0 ? delay : 500);
 
 		inputEl.style.minHeight = '';
-		inputEl.style.minHeight = inputEl.scrollHeight + 'px';
+		inputEl.style.minHeight = value ? inputEl.scrollHeight + 'px' : '';
 	};
 	inputEl.oninput(0);
 
