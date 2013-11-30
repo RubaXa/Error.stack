@@ -46,6 +46,8 @@
 
 	function _show(idx){
 		var err = _stack[idx];
+		var callFn = _stack[idx-1] && _stack[idx-1].fn || err.fn;
+
 		_req(err.file, function (code){
 			code = code.split(/\n/);
 
@@ -91,7 +93,7 @@
 						return '<span class="bug">'+bug.trim()+'</span>';
 					});
 				}
-				bug = bug.replace(new RegExp('(\\b'+err.fn.split(/[/.]/).pop()+'\\b)', 'gm'), '<span class="bug-fn">$1</span>');
+				bug = bug.replace(new RegExp('(\\b'+callFn.split(/[/.]/).pop()+'\\b)', 'gm'), '<span class="bug-fn">$1</span>');
 
 				if( beautify ){
 					bug = bug.trim();
@@ -182,7 +184,7 @@
 			}
 		}
 
-		if( match ){
+		if( match && !/_errorStackWrapper/.test(match[1]) ){
 			file	= match[2].match(/^(.*?):(\d+)(?::(\d+))?/) || [];
 			match	= {
 				  fn:	(match[1] || '<anonymous>').trim()
@@ -190,6 +192,9 @@
 				, line:	file[2]|0
 				, pos:	file[3]*1-1
 			};
+		}
+		else {
+			match = null;
 		}
 
 		return	match;
@@ -213,7 +218,7 @@
 		inputEl.style.minHeight = '';
 		inputEl.style.minHeight = inputEl.scrollHeight + 'px';
 	};
-	inputEl.oninput(1);
+	inputEl.oninput(0);
 
 	navEl.onclick = function (evt){
 		var el = evt.target;
@@ -233,8 +238,7 @@
 	};
 
 	demoEl.onclick = function (){
-		inputEl.value = window.demoBugStack;
-
+		inputEl.value = Error.stack[0].toString();
 		inputEl.oninput(1500);
 	};
 
