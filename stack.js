@@ -2,6 +2,7 @@
 	var _idx;
 	var _stack = [];
 	var _cache = {};
+	var _version = "0.0.1";
 
 
 	function setStack(value){
@@ -236,4 +237,6 @@
 
 		inputEl.oninput(1500);
 	};
+
+	console.log('Error.stack: '+_version);
 })();
