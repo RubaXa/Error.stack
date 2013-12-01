@@ -14,6 +14,7 @@ pre {
 .well, .btn {
 	padding: 10px;
 	background-color: rgba(255,255,255,.1);
+	background-color: #505261;
 }
 
 .btn { cursor: pointer; }
@@ -45,6 +46,7 @@ pre {
 	font-size: 20px;
 	position: fixed;
 	display: none;
+	background-color: rgba(255,100,100,.5);
 }
 
 
@@ -73,6 +75,9 @@ pre {
 #bug {
 	background-color: rgba(255,100,100,.2);
 }
+	.bug-fn-in {
+		background-color: rgba(255,100,100,.15);
+	}
 	.bug-fn {
 		background-color: rgba(255,100,100,.3);
 	}

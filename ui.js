@@ -2,7 +2,7 @@
 	var _idx;
 	var _stack = [];
 	var _cache = {};
-	var _version = "0.0.1";
+	var _version = "0.1.0";
 
 
 	function setStack(value){
@@ -46,7 +46,8 @@
 
 	function _show(idx){
 		var err = _stack[idx];
-		var callFn = _stack[idx-1] && _stack[idx-1].fn || err.fn;
+		var callFn = (_stack[idx-1] && _stack[idx-1].fn || '').split(/[/.]/).pop();
+		var inFn = err.fn.split(/[/.]/).pop();
 
 		_req(err.file, function (code){
 			code = code.split(/\n/);
@@ -78,7 +79,6 @@
 			}
 
 			code[line] = bugLine;
-
 			code = code.join('\n');
 
 			if( beautify ){
@@ -86,14 +86,20 @@
 			}
 
 			code = hljs.highlight('javascript', code).value;
-
 			code = code.replace(/<span class="comment">\/\*!BUG\*\/<\/span>([\r\n\s+]*[\s\S]+)<span class="comment">\/\*BUG!\*\/<\/span>/, function (_, bug){
 				if( pos >= 0 ){
 					bug = bug.replace(/\s*<span class="comment">\/\*!B\*\/<\/span>([\s\S]+)<span class="comment">\/\*B!\*\/<\/span>\s*/, function (_, bug){
 						return '<span class="bug">'+bug.trim()+'</span>';
 					});
 				}
-				bug = bug.replace(new RegExp('(\\b'+callFn.split(/[/.]/).pop()+'\\b)', 'gm'), '<span class="bug-fn">$1</span>');
+
+				if( inFn ){
+					bug = bug.replace(new RegExp('(\\b'+inFn+':)', 'gm'), '<span class="bug-fn-in">$1</span>');
+				}
+
+				if( callFn ){
+					bug = bug.replace(new RegExp('(\\b'+callFn+'\\b)', 'gm'), '<span class="bug-fn">$1</span>');
+				}
 
 				if( beautify ){
 					bug = bug.trim();
@@ -115,8 +121,44 @@
 			setTimeout(function (){
 				var bug = document.getElementById('bug');
 				if( bug ){
-					var bugggy = bug.querySelector('.bug') || bug.querySelector('.bug-fn') || bug;
+					var bugggy = bug.querySelector('.bug');
+					if( !bugggy ){
+						[].slice.call(bug.querySelectorAll('.bug-fn-in ~ .bug-fn')).forEach(function (el){
+							var ind, indent = 0, _ind, value, state = 0, _el = el;
+							while( el = el.previousSibling ){
+								value = el.nodeValue;
+
+								if( state && /bug-fn-in/.test(el.className) ){
+									bugggy = _el;
+									bugggy.className = 'bug';
+									break;
+								}
+
+								if( el.nodeType == 3 && /\n/.test(value) ){
+									ind = value.replace(/[^\s]|\n/g, '').length;
+									if( ind % 2 ){
+										continue;
+									}
+
+									if( state === 0 ){
+										state = 1;
+										indent = ind;
+									}
+									else if( _ind < ind ){
+//										console.log(_ind, ind, el.previousSibling.innerHTML, el.nextSibling.innerHTML);
+										break;
+									}
+
+									_ind = ind;
+								}
+							}
+						});
+
+						bugggy = bugggy || bug.querySelector('.bug-fn') || bug.querySelector('.bug-fn-in') || bug;
+					}
+
 					var rect = bugggy.getBoundingClientRect();
+
 					window.scrollTo(
 						  0//rect.left + window.pageXOffset - window.innerWidth/2
 						, rect.top + window.pageYOffset - window.innerHeight/2 + 50
@@ -219,6 +261,7 @@
 		inputEl.style.minHeight = '';
 		inputEl.style.minHeight = value ? inputEl.scrollHeight + 'px' : '';
 	};
+	inputEl.value = '';
 	inputEl.oninput(0);
 
 	navEl.onclick = function (evt){
