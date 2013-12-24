@@ -3,13 +3,14 @@
 	var _stack = [];
 	var _cache = {};
 	var _version = "0.1.0";
+	var _errLog = {}, _errLogId;
 
 
-	function setStack(value){
+	function setStack(err){
 		var stack = [];
 
-		value = _convert(value);
-		value.forEach(function (line){
+		err = _parse(err);
+		err.forEach(function (line){
 			var err = _getError(line);
 			if( err ){
 				stack.push(err);
@@ -19,7 +20,7 @@
 		if( stack.length ){
 			ui.classList.add("active");
 
-			titleEl.innerHTML = value[0];
+			titleEl.innerHTML = err[0];
 			titleEl.style.marginLeft = -titleEl.offsetWidth/2+'px';
 
 			navEl.innerHTML = stack.map(function (err, i){
@@ -29,6 +30,8 @@
 				+ '</div>';
 			}).join('');
 
+			// reset
+			_idx = -1;
 			_stack = stack;
 			seek(0);
 		}
@@ -37,9 +40,14 @@
 
 	function seek(idx){
 		if( _idx != idx ){
-			(_idx != null) && navEl.children[_idx].classList.remove('active');
+			loadingEl.style.display = '';
+
+			(_idx >= 0) && navEl.children[_idx].classList.remove('active');
 			navEl.children[_idx = idx].classList.add('active');
-			_show(idx);
+
+			setTimeout(function (){
+				_show(idx);
+			}, 10);
 		}
 	}
 
@@ -105,7 +113,7 @@
 					bug = bug.trim();
 				}
 
-				return	'<span id="bug">'+bug+'</span>';
+				return	'<span id="bug"></span>'+bug+'<span id="bugEnd"></span>';
 			});
 
 			console.time('remove');
@@ -120,10 +128,21 @@
 
 			setTimeout(function (){
 				var bug = document.getElementById('bug');
+
 				if( bug ){
-					var bugggy = bug.querySelector('.bug');
+					var rect = bug.getBoundingClientRect();
+					var bugggy = document.querySelector('.bug');
+
+					bug.style.top = rect.top + window.pageYOffset + 'px';
+					bug.style.left = '0px';
+					bug.style.width = '100%';
+					bug.style.height = (bugEnd.getBoundingClientRect().bottom - rect.top) + 'px';
+					bug.style.display = 'block';
+					bug.style.position = 'absolute';
+
+
 					if( !bugggy ){
-						[].slice.call(bug.querySelectorAll('.bug-fn-in ~ .bug-fn')).forEach(function (el){
+						[].slice.call(document.querySelectorAll('.bug-fn-in ~ .bug-fn')).forEach(function (el){
 							var ind, indent = 0, _ind, value, state = 0, _el = el;
 							while( el = el.previousSibling ){
 								value = el.nodeValue;
@@ -154,7 +173,7 @@
 							}
 						});
 
-						bugggy = bugggy || bug.querySelector('.bug-fn') || bug.querySelector('.bug-fn-in') || bug;
+						bugggy = bugggy || document.querySelector('.bug-fn') || document.querySelector('.bug-fn-in') || bug;
 					}
 
 					var rect = bugggy.getBoundingClientRect();
@@ -164,6 +183,8 @@
 						, rect.top + window.pageYOffset - window.innerHeight/2 + 50
 					);
 				}
+
+				loadingEl.style.display = 'none';
 			}, 10);
 		});
 	}
@@ -199,17 +220,28 @@
 	}
 
 
-	function _convert(value){
-		value = value.trim().split('\n');
+	function _parse(err){
+		if( err instanceof Error ){
+			err = err.message +'\n'+ err.stack;
+		}
 
-		if( value.length == 3 && /^http/.test(value[1]) ){
-			value = [
-				value[0],
-				'<unknown>@'+value[1]+':'+value[2].substr(5)
+		err = err.trim().split('\n');
+
+		if( err.length == 2 && /^\d+:\s+http/.test(err[0]) ){
+			var tmp = err[0].split(/:\s+/);
+			err = [
+				err[1],
+				'<unknown>@'+tmp[1]+':'+tmp[0]
+			];
+		}
+		else if( err.length == 3 && /^http/.test(err[1]) ){
+			err = [
+				err[0],
+				'<unknown>@'+err[1]+':'+err[2].substr(5)
 			];
 		}
 
-		return	value;
+		return	err;
 	}
 
 
@@ -243,18 +275,100 @@
 	}
 
 
-	// UI
+	function _parseLogFile(file){
+		console.log('_parseLogFile:', file);
+		_errLog = {};
+
+		FileAPI.readAsText(file, function (evt){
+			if( evt.type == 'load' ){
+				evt.result.split(/[\r\n]+/).forEach(function (line, idx){
+					var query = {};
+
+					line.split('&').forEach(function (param){
+						param = param.split('=');
+						query[param[0]] = decodeURIComponent(param[1]);
+					});
+
+					var prefix = (query.fn || query.method);
+					var err = Error.parse(
+						  (prefix ? prefix+': ' : '') + (query.err || query.error || query.msg || query.message)
+						, query.file || query.filename || query.fileName
+						, query.line || query.lineNo || query.lineno ||  query.lineNumber
+						, query.stack || query.stacktrace
+					);
+
+					if( !_errLog[err._id] ){
+						_errLog[err._id] = err;
+					} else {
+						_errLog[err._id].amount++;
+					}
+				});
+
+				_redrawErrLog();
+			}
+		});
+	}
+
+
+	function _redrawErrLog(){
+		var errors = [], _id;
+		for( _id in _errLog ){
+			errors.push(_errLog[_id]);
+		}
+
+		errors.sort(function (a, b){
+			return	b.amount - a.amount;
+		});
+
+		titleEl.style.display = 'none';
+		errLogEl.style.display = '';
+
+		errLogEl.innerHTML = errors.map(function (err){
+			return '<li data-id="'+ err._id +'" class="'+
+				(err.fileName && err.lineNumber ? '' : 'disabled')
+			+'">('+ err.amount +') '+ err.message +'</li>';
+		}).join('');
+
+		// Set log id
+		var el = errLogEl.querySelector(':not(.disabled)');
+
+		el.classList.add('selected');
+
+		// Show error
+		setStack(_errLog[el.dataset.id]);
+	}
+
+	errLogEl.addEventListener('click', function (evt){
+		var el = evt.target;
+
+		if( !el.classList.contains('disabled') && !el.classList.contains('selected') ){
+			errLogEl.querySelector('.selected').classList.remove('selected');
+			el.classList.add('selected');
+			setStack(_errLog[el.dataset.id]);
+		}
+	}, false);
+
+
+
+
+	//
+	//        ~~~ UI ~~~
+	//
 	window.onresize = function (){
 		navEl.style.maxHeight = (window.innerHeight - 80) + 'px';
 	};
 	window.onresize();
 
+	// Input
 	var pid = 0;
 	inputEl.oninput = function (delay){
 		var value = inputEl.value.trim();
 		clearTimeout(pid);
 
 		var pid = setTimeout(function (){
+			titleEl.style.display = '';
+			errLogEl.style.display = 'none';
+
 			setStack(value);
 		}, delay > 0 ? delay : 500);
 
@@ -264,11 +378,13 @@
 	inputEl.value = '';
 	inputEl.oninput(0);
 
+	// Nav
 	navEl.onclick = function (evt){
 		var el = evt.target;
 		seek((el.dataset.idx || el.parentNode.dataset.idx)|0);
 	};
 
+	// Back
 	backEl.onclick = function (){
 		ui.classList.remove('active');
 		_idx = null;
@@ -277,14 +393,31 @@
 		inputEl.focus();
 	};
 
+	// Beautify
 	beautifyChecked.onchange = function (){
 		_show(_idx);
 	};
 
+	// Demo
 	demoEl.onclick = function (){
 		inputEl.value = Error.stack[0].toString();
 		inputEl.oninput(1500);
 	};
 
+	// Drag'n'Drop
+	FileAPI.event.dnd(document, function (state){
+		baseUI.style.display = state ? 'none' : '';
+		dndOverlay.style.display = state ? '' : 'none';
+	}, function (files){
+		loadingEl.style.display = '';
+
+		files.forEach(function (file){
+			if( /\.(txt|log)/.test(file.name) ){
+				_parseLogFile(file);
+			}
+		});
+	});
+
+	// Console
 	console.log('Error.stack: '+_version);
 })();

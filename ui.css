@@ -73,7 +73,8 @@ pre {
 
 
 #bug {
-	background-color: rgba(255,100,100,.2);
+	z-index: -1;
+	background-color: rgba(255,100,100,.1);
 }
 	.bug-fn-in {
 		background-color: rgba(255,100,100,.15);
@@ -167,3 +168,105 @@ pre code {
   font-family: Menlo, Monaco, Consolas, monospace;
   line-height: 1.5;
 }
+
+
+
+#dndOverlay {
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
+	z-index: 10000;
+	position: fixed;
+	font-size: 100px;
+	text-align: center;
+	background-color: rgba(255,255,255,.4);
+}
+	#dndOverlay::before {
+		content: "";
+		height: 100%;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	#dndOverlay div {
+		display: inline-block;
+		vertical-align: middle;
+		text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+	}
+
+
+
+#errLogEl {
+	left: 10px;
+	bottom: 10px;
+	position: fixed;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 15px;
+	max-width: 400px;
+	max-height: 500px;
+}
+	#errLogEl li {
+		cursor: pointer;
+		padding: 10px 15px;
+		border-bottom: 1px solid #000;
+	}
+
+	#errLogEl li:hover {
+		background-color: rgba(255,255,255,0.15);
+	}
+
+	#errLogEl :not(.selected){
+		display: none;
+	}
+
+	#errLogEl:hover {
+		overflow: auto;
+	}
+		#errLogEl:hover li {
+			display: list-item;
+		}
+
+	#errLogEl .selected {
+		background-color: rgba(255,255,255,0.3);
+	}
+
+	#errLogEl .disabled {
+		opacity: .4;
+	}
+
+
+
+
+
+.loading {
+	top: 50%;
+	left: 50%;
+	margin: -80px 0 0 -50px;
+	padding: 30px;
+	position: fixed;
+	box-shadow: 0 1px 3px rgba(0,0,0,.3);
+	background-color: rgba(255,255,255,.1);
+}
+	.loading:after {
+		border-width: 0 4px 0 0;
+		border-style: solid;
+		border-color: rgba(255,255,255,.8);
+		border-radius: 50%;
+		display: block;
+		height: 50px;
+		width: 50px;
+		content: "";
+		animation: spin 1s infinite linear;
+		-webkit-animation: spin 1s infinite linear;
+	}
+	@keyframes spin {
+		from { transform: rotate(0deg); }
+		to { transform: rotate(360deg); }
+	}
+	@-webkit-keyframes spin {
+		from { -webkit-transform: rotate(0deg); }
+		to { -webkit-transform: rotate(360deg); }
+	}
