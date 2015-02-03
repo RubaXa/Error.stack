@@ -57,6 +57,7 @@ pre {
 	overflow: auto;
 	position: fixed;
 	display: none;
+	max-width: 30%;
 }
 	#navEl .fn { font-weight: bold; }
 	#navEl div { cursor: pointer; padding: 5px 10px; }
