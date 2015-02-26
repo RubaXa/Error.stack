@@ -9,7 +9,17 @@
 	/** @namespace navEl */
 	/** @namespace codeEl */
 	/** @namespace titleEl */
+	/** @namespace proxyEl */
 	/** @namespace loadingEl */
+
+
+	// Получаем URL прокси
+	proxyEl.onblur = function () {
+		localStorage.setItem('proxy', proxyEl.value);
+	};
+
+	proxyEl.value = localStorage.getItem('proxy') || 'http://jsonp.jit.su/?url=';
+
 
 	function setStack(err) {
 		var stack = [];
@@ -55,7 +65,7 @@
 
 
 	function setTitle(title) {
-		titleEl.innerHTML = title;
+		titleEl.textContent = title;
 		titleEl.style.marginLeft = -titleEl.offsetWidth / 2 + 'px';
 	}
 
@@ -224,14 +234,16 @@
 			var xhr = new XMLHttpRequest();
 
 			a.href = file;
-			xhr.open("GET", a.hostname == location.hostname ? file : 'http://jsonp.jit.su/?url=' + decodeURIComponent(file), true);
+			xhr.open("GET", a.hostname == location.hostname ? file : proxyEl.value + decodeURIComponent(file), true);
 
 			xhr.onload = xhr.onerror = function () {
 				var code = xhr.responseText;
 
 				try {
-					code = JSON.parse(code);
-					code = code.success || code.error;
+					if (code.charAt(0) == '{') {
+						code = JSON.parse(code);
+						code = code.success || code.error;
+					}
 				} catch (er) {
 				}
 
