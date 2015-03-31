@@ -114,7 +114,12 @@
 				bugLine = before + after;
 			}
 			else {
-				bugLine = '/*!BUG*/' + bugLine + '/*BUG!*/';
+				var commentIdx = bugLine.search(/\/[*/]/);
+				if (commentIdx > -1) {
+					bugLine = '/*!BUG*/' + bugLine.substr(0, commentIdx) + '/*BUG!*/' + bugLine.substr(commentIdx);
+				} else {
+					bugLine = '/*!BUG*/' + bugLine + '/*BUG!*/';
+				}
 			}
 
 			if (entry.label) {
@@ -284,22 +289,27 @@
 
 
 	function _getError(value) {
-		var match = value.match(/at\s+(.*?)\((.*?)\)/), file;
+		var match = value.match(/at\s+([^\s]+)(?:.*?)\(((?:http|\/)[^)]+:\d+)\)/),
+			file;
 
 		if (!match) {
-			match = value.match(/at\s+(.+)/);
-			if (!match) {
-				match = value.match(/^(.*?)(?:\/<)*@(.*?)$/);
-			} else {
-				match[0] = '<anonymous>';
-				match.unshift('');
+				match = value.match(/at\s+(.+)/);
+
+				if (!match) {
+					match = value.match(/^(.*?)(?:\/<)*@(.*?)$/) || value.match(/^()(https?:\/\/.+)/);
+				} else {
+					match[0] = '<anonymous>';
+					match.unshift('');
+				}
 			}
-		}
 
 		if (match && !/_errorStackWrapper/.test(match[1])) {
 			file = match[2].match(/^(.*?):(\d+)(?::(\d+))?/) || [];
 			match = {
-				fn: (match[1] || '<anonymous>').trim(), file: file[1], line: file[2] | 0, pos: file[3] * 1 - 1
+				fn: (match[1] || '<anonymous>').trim(),
+				file: file[1],
+				line: file[2]|0,
+				column: file[3]|0
 			};
 		}
 		else {
@@ -412,15 +422,6 @@
 	navEl.onclick = function (evt) {
 		var el = evt.target;
 		seek((el.dataset.idx || el.parentNode.dataset.idx) | 0);
-	};
-
-	// Back
-	backEl.onclick = function () {
-		ui.classList.remove('active');
-		_idx = null;
-		inputEl.value = '';
-		inputEl.oninput();
-		inputEl.focus();
 	};
 
 	// Beautify
