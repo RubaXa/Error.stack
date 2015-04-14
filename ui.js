@@ -93,7 +93,7 @@
 		_req(meta.file, function (code) {
 			code = code.split(/\n/);
 
-			var pos = meta.pos,
+			var pos = meta.column,
 				line = meta.line - 1,
 				bugLine = code[line],
 				beautify = beautifyChecked.checked;
