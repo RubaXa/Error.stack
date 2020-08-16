@@ -1,0 +1,7 @@
+{
+  "extends": "./node_modules/@mail-core/platform/preset/typescript.json",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+	"extends": "./node_modules/@mail-core/lint/config/eslint.js",
+	"rules": {
+		"no-console": [
+			"off"
+		],
+		"compat/compat": [
+			"off"
+		],
+		"unicorn/prefer-starts-ends-with": [
+			"off"
+		]
+	}
+}

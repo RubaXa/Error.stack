@@ -1,0 +1,128 @@
+html, body {
+	color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	font-family: "Arial", Helvetica;
+	background-color: #383e4b;
+	min-height: 100%;
+}
+
+
+pre {
+	margin: 20px;
+}
+
+.well, .btn {
+	padding: 10px;
+	background-color: rgba(255,255,255,.05);
+	background-color: #505261;
+}
+
+#error-log {
+	font-family: monospace;
+	width: 60%;
+	height: 50vh;
+	margin: 20px auto;
+	display: block;
+	border: 0;
+	resize: none;
+	color: #fff;
+	font-size: 16px;
+	border-radius: 4px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#error-log::placeholder {
+	font-size: 300%;
+}
+
+
+#navEl {
+	top: 20px;
+	right: 20px;
+	padding: 0;
+	overflow: auto;
+	position: fixed;
+	display: none;
+	max-width: 30%;
+}
+	#navEl .fn { font-weight: bold; }
+	#navEl div { cursor: pointer; padding: 5px 10px; }
+
+	#navEl div:hover { background-color: rgba(255,255,255,.1); }
+	#navEl div.active { background-color: rgba(255,255,255,.2); }
+
+
+#codeEl {
+	display: none;
+	padding-top: 60px;
+}
+
+
+#dndOverlay {
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
+	z-index: 10000;
+	position: fixed;
+	font-size: 100px;
+	text-align: center;
+	background-color: rgba(255,255,255,.4);
+}
+	#dndOverlay::before {
+		content: "";
+		height: 100%;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	#dndOverlay div {
+		display: inline-block;
+		vertical-align: middle;
+		text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+	}
+
+#errLogEl {
+	left: 10px;
+	bottom: 10px;
+	position: fixed;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 15px;
+	max-width: 400px;
+	max-height: 500px;
+}
+	#errLogEl li {
+		cursor: pointer;
+		padding: 10px 15px;
+		border-bottom: 1px solid #000;
+	}
+
+	#errLogEl li:hover {
+		background-color: rgba(255,255,255,0.15);
+	}
+
+	#errLogEl :not(.selected){
+		display: none;
+	}
+
+	#errLogEl:hover {
+		overflow: auto;
+	}
+		#errLogEl:hover li {
+			display: list-item;
+		}
+
+	#errLogEl .selected {
+		background-color: rgba(255,255,255,0.3);
+	}
+
+	#errLogEl .disabled {
+		opacity: .4;
+	}

@@ -1,4 +1,11 @@
-Error.stack
+error.stack
 -----------
 
-### [http://rubaxa.github.io/Error.stack/](http://rubaxa.github.io/Error.stack/ )
+```sh
+npm i --save-dev error.stack
+```
+
+---
+
+### Usage
+

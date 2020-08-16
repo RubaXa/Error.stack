@@ -1,0 +1,23 @@
+# editorconfig.org
+# Based on @mail-core/lint
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = tab
+insert_final_newline = true
+max_line_length = 110
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[{*.json,*.yaml,*.yml}]
+indent_size = 2
+indent_style = space
+
+[.nvmrc]
+insert_final_newline = false

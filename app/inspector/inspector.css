@@ -1,0 +1,136 @@
+.inspector {
+	position: relative;
+	min-height: 100%;
+	box-sizing: border-box;
+}
+
+.inspector .entries {
+	cursor: pointer;
+	left: 50%;
+	font-size: 20px;
+	position: fixed;
+	transform: translate(-50%, 20px);
+	z-index: 1000;
+}
+
+.inspector .entry-stack-row {
+	font-size: 80%;
+    text-shadow: 0 1px 2px rgba(0,0,0,.8);
+    padding: 2px 10px;
+}
+
+.inspector .entry-active {
+	padding: 5px 10px;
+	background-color: rgba(255,100,100,.5);
+	text-shadow: 0 1px 2px rgba(0,0,0,.8);
+}
+
+.inspector .entries-selector {
+	margin-top: 2px;
+	background-color: #383e4b;
+	overflow: auto;
+	max-height: 80vh;
+}
+
+.inspector .entries-selector-item {
+	padding: 5px 10px;
+	margin-top: 1px;
+	background-color: rgba(255,100,100,.2);
+}
+
+.inspector .entries-selector-item:hover {
+	background-color: rgba(255,100,100,.4);
+}
+
+.inspector .entries-selector-item.true {
+	background-color: rgba(255,100,100,.3);
+}
+
+.inspector .stack {
+	z-index: 500;
+	position: fixed;
+	top: 100px;
+	right: 20px;
+	padding: 0;
+	overflow: auto;
+	max-height: 60vh;
+	max-width: 30vh;
+	background-color: rgba(255,255,255,.05);
+}
+
+.inspector .stack-row {
+	padding: 5px 25px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.inspector .stack-row.true {
+	background-color: rgba(255,255,255,.05);
+}
+
+.inspector .stack-row.true:before {
+	content: '➡️';
+	display: block;
+	position: absolute;
+	transform: translate(-20px, -5px);
+}
+
+.inspector .stack-row-true:hover {
+	background-color: rgba(255,255,255,.2);
+}
+
+.inspector .stack-row-false {
+	cursor: not-allowed;
+	color: #999;
+}
+
+.inspector .source {
+	padding: 60px 10px 10px;
+    min-height: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+	font-family: monospace;
+}
+
+.inspector .source-loading {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.inspector .bug-line {
+	background-color: rgba(255,100,100,.1);
+	border-radius: 4px;
+}
+
+.inspector .bug-msg,
+.inspector .bug-fn-in,
+.inspector .bug-fn,
+.inspector .bug {
+	background-color: rgba(255,100,100,.3);
+	display: inline-block;
+	padding: 1px 5px 3px;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+.inspector .bug-fn-in {
+	background-color: rgba(255,100,100,.15);
+}
+
+.inspector .bug-fn {
+	background-color: rgba(255,100,100,.3);
+}
+
+.inspector .bug {
+	font-weight: bold;
+	background-color: rgba(255,100,100,.5);
+}
+
+.inspector .source-unavailable {
+	position: fixed;
+    left: 50%;
+    top: 50%;
+	transform: translate(-50%, -50%);
+}
