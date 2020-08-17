@@ -38,6 +38,12 @@
 	background-color: rgba(255,100,100,.2);
 }
 
+.inspector .entries-selector-item small {
+	font-size: 60%;
+    color: #f0f0f0;
+    display: block;
+}
+
 .inspector .entries-selector-item:hover {
 	background-color: rgba(255,100,100,.4);
 }

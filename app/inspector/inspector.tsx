@@ -65,7 +65,8 @@ export function Inspector(props: InspectorProps) {
 									toggleExpanded();
 								}}
 							>
-								{entry.msg?.err?.message}
+								{entry.msg?.err?.message}<br/>
+								<small>{entry.msg?.err?.source}</small>
 							</div>
 						))}
 					</div>

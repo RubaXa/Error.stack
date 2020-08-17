@@ -17,6 +17,17 @@ export function App() {
 		[setRawLog],
 	);
 
+	React.useEffect(() => {
+		window.addEventListener('message', ({data}) => {
+			if (data && data.type === 'RAW_LOG' && data.raw) {
+				console.log('Received raw log:', data.raw);
+				setRawLog(data.raw.map((r: any) => JSON.stringify(r)).join('\n'));
+			}
+		});
+
+		parent.postMessage('PULL', '*');
+	}, []);
+
 	return (
 		<>
 			<DragAndDropZone
