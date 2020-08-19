@@ -68,7 +68,14 @@ function parseEntry(raw: any): any {
 	switch (typeof raw) {
 		case 'object':
 			for (const key in raw) {
-				raw[key] = parseEntry(raw[key]);
+				if (key === 'stack' && raw.parsedStack) {
+					raw[key] = {
+						raw: raw[key],
+						parsed: raw.parsedStack,
+					}
+				} else {
+					raw[key] = parseEntry(raw[key]);
+				}
 			}
 			return raw;
 
