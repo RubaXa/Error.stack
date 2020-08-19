@@ -2,7 +2,7 @@ import type {ReporterError} from '@mail-core/logger/error/reporter/reporter';
 import {parseStack, StackRow} from '@mail-core/logger/error/stack/stack';
 
 const isLikeJSON = /^\s*\{"[\s\S]+\}\s*$/;
-const isLikeStack = /\.js:\d+:\d+/;
+const isLikeStack = /\.(js|[a-z]+\/?):\d+:\d+/;
 
 export type LegacyLog = LegacyLogEntry[];
 export type LegacyLogError = Omit<ReporterError, 'stack'> & {
@@ -68,14 +68,7 @@ function parseEntry(raw: any): any {
 	switch (typeof raw) {
 		case 'object':
 			for (const key in raw) {
-				if (key === 'stack' && raw.parsedStack) {
-					raw[key] = {
-						raw: raw[key],
-						parsed: raw.parsedStack,
-					}
-				} else {
-					raw[key] = parseEntry(raw[key]);
-				}
+				raw[key] = parseEntry(raw[key]);
 			}
 			return raw;
 
