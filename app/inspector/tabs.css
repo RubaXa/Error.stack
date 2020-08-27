@@ -1,0 +1,55 @@
+.tabs {}
+
+.tabs-list {
+	display: flex;
+}
+
+.tab-title {
+	cursor: pointer;
+	background-color: rgba(255,255,255,.03);
+	border-radius: 4px 4px 0 0;
+	padding: 10px;
+}
+
+.tab-badge {
+	font-size: 10px;
+    background-color: rgba(0,0,0,.3);
+    border-radius: 6px;
+    padding: 2px 4px 3px;
+    margin-left: 5px;
+    display: inline-block;
+    font-family: sans-serif;
+}
+
+.tab-title.true {
+	background-color: rgba(255,255,255,.08);
+}
+
+.tab-content {
+	background-color: rgba(255,255,255,.08);
+	padding: 10px;
+	border-radius: 0 4px 4px 4px;
+	overflow: auto;
+}
+
+.tab-list-item {
+	display: flex;
+	padding: 4px 0;
+}
+
+.tab-list-item-count {
+	min-width: 20px;
+	flex-shrink: 0;
+	text-align: right;
+	margin-right: 10px;
+	color: rgb(226, 226, 103);
+}
+
+.tab-list-item.clickable[aria-disabled="false"] {
+	cursor: pointer;
+}
+
+.tab-list-item.clickable[aria-disabled="false"]:hover {
+	background-color: rgba(255,255,255,.1);
+	border-radius: 4px;
+}

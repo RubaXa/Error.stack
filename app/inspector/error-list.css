@@ -1,0 +1,160 @@
+.error-list-toolbar,
+.error-list {
+	margin: 0 auto;
+	max-width: 900px;
+	font-size: 16px;
+}
+
+.error-list-entry {
+	cursor: pointer;
+	padding: 10px 15px;
+	background-color: rgba(255,255,255,.05);
+	border-radius: 4px;
+	overflow: auto;
+}
+
+.error-list-entry:hover,
+.error-list-entry.visited:hover {
+	opacity: 1;
+	background-color: rgba(255,255,255,.1);
+}
+
+.error-list-entry.visited {
+	opacity: .6;
+}
+
+.error-list-entry.active,
+.error-list-entry.active:hover {
+	opacity: 1;
+	background-color: rgba(255,100,100,.5);
+}
+
+.error-list-entry + .error-list-entry {
+	margin-top: 2px;
+}
+
+.error-list-toolbar {
+	margin-bottom: 20px;
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.error-list-toolbar select,
+.error-list-toolbar input {
+	vertical-align: middle;
+	margin-left: 5px;
+	font-size: 16px;
+}
+
+.error-list-toolbar-item {
+	padding: 10px 15px;
+	background-color: rgba(255,255,255,.05);
+	border-radius: 4px;
+}
+
+.error-list-entry-info {
+	display: flex;
+	justify-content: space-between;
+}
+
+.error-list-entry-count {
+	color: #c00;
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+.error-list-entry-msg {
+	flex-grow: 2;
+}
+
+.error-list-entry-uniq {
+	font-size: 12px;
+}
+
+.error-list-entry-sub {
+	margin-top: 10px;
+	padding-left: 15px;
+}
+
+.error-list-entry-sub + .error-list-entry-sub {
+	margin-top: 15px;
+}
+
+.error-list-entry-sub .error-list-entry-count {
+	color: rgb(226, 226, 103);
+}
+
+.error-list-entry-cetegory {
+	color: rgb(134, 224, 224);
+}
+
+.error-list-entry-fn {
+	color: rgb(206, 185, 253);
+}
+
+.error-list-entry-ua,
+.error-list-entry-url,
+.error-list-entry-stack {
+	color: rgb(167, 167, 167);
+}
+
+.error-list-entry-url {
+	text-decoration: underline;
+}
+
+.error-list-entry-stack {
+	white-space: pre;
+}
+
+.error-list-slider {
+	display: flex;
+	width: 100%;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.error-list-slider .error-list {
+	margin: 0;
+	overflow: auto;
+	display: flex;
+	max-width: inherit;
+	flex-grow: 3;
+}
+
+.error-list-nav-ctrl {
+	color: #fff;
+	font-size: 30px;
+	padding: 0 10px;
+	cursor: pointer;
+	border-radius: 4px;
+	flex-flow: 0;
+	flex-shrink: 0;
+	user-select: none;
+}
+
+.error-list-nav-ctrl:hover {
+	background-color: rgba(255,255,255,.1);
+}
+
+.error-list-nav-ctrl.home {
+	margin-right: 5px;
+}
+
+.error-list-nav-ctrl.next {
+	margin-left: 5px;
+}
+
+.error-list-slider .error-list-entry {
+	margin: 0 10px 0 0;
+	flex-shrink: 0;
+}
+
+.error-list-slider .error-list-entry-sub {
+	display: none;
+	min-width: 25vw;
+}
+
+.error-list-slider .error-list-entry-msg {
+	margin-right: 10px;
+}

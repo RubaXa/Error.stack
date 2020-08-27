@@ -3,7 +3,10 @@
 @import url("./spinner.css");
 
 /* Components */
+@import url("../app/inspector/error-list.css");
+@import url("../app/inspector/tabs.css");
 @import url("../app/inspector/inspector.css");
+@import url("../app/inspector/stack.css");
 
 /* JS Theme */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/tomorrow-night.min.css");
