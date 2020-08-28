@@ -27,7 +27,7 @@ export function Inspector(props: InspectorProps) {
 			{activeEntry && (
 				<div className="inspector-main">
 					<div className="inspector-stack">
-						<Stack error={activeRecordEntry?.msg.err} />
+						<Stack key={activeRecordEntry?.msg.err.message} error={activeRecordEntry?.msg.err} />
 					</div>
 
 					<div className="inspector-detail">
